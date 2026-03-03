@@ -1,0 +1,66 @@
+@startuml
+
+actor User
+participant "Auth" as auth
+participant "DataProcessor" as dp
+participant "EnergyPredictor" as ep
+participant "AnomalyDetector" as ad
+participant "EnergyOptimizer" as eo
+participant "ReportGenerator" as rg
+database "Data Storage" as db
+
+== User Authentication ==
+User -> auth: Login(email, password)
+activate auth
+auth -> db: Validate credentials
+db --> auth: User data
+auth --> User: Authentication result
+deactivate auth
+
+== Energy Data Processing ==
+User -> dp: Upload energy data
+activate dp
+dp -> dp: Validate data
+dp -> dp: Clean data
+dp -> db: Store processed data
+dp --> User: Processing confirmation
+deactivate dp
+
+== Energy Analysis ==
+User -> ep: Request consumption prediction
+activate ep
+ep -> db: Fetch historical data
+ep -> ep: Prepare features
+ep -> ep: Generate predictions
+ep -> db: Store predictions
+ep --> User: Prediction results
+deactivate ep
+
+User -> ad: Request anomaly detection
+activate ad
+ad -> db: Fetch consumption data
+ad -> ad: Detect anomalies
+ad -> db: Store anomaly results
+ad --> User: Anomaly report
+deactivate ad
+
+== Optimization ==
+User -> eo: Request optimization plan
+activate eo
+eo -> db: Fetch consumption patterns
+eo -> eo: Analyze patterns
+eo -> eo: Generate recommendations
+eo -> db: Store optimization plan
+eo --> User: Optimization recommendations
+deactivate eo
+
+== Report Generation ==
+User -> rg: Request report
+activate rg
+rg -> db: Fetch required data
+rg -> rg: Generate report
+rg -> db: Store report
+rg --> User: Generated report
+deactivate rg
+
+@enduml 

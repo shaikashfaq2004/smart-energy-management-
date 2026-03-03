@@ -1,0 +1,68 @@
+@startuml
+
+' Main Classes
+class DataProcessor {
+    + required_columns: List[str]
+    + validate_data(df: DataFrame): bool
+    + clean_data(df: DataFrame): DataFrame
+    + process_uploaded_file(file): DataFrame
+}
+
+class ReportGenerator {
+    + template_dir: str
+    + generate_report(df: DataFrame, report_type: str): dict
+    + generate_custom_report(df: DataFrame, start_date: str, end_date: str): dict
+    + generate_pdf_report(report_data: dict, output_path: str): str
+    + generate_text_report(report_data: dict, output_path: str): str
+}
+
+class EnergyPredictor {
+    + model: RandomForestRegressor
+    + scaler: StandardScaler
+    + prepare_features(df: DataFrame): tuple
+    + train(df: DataFrame): void
+    + predict_consumption(df: DataFrame, forecast_hours: int): DataFrame
+}
+
+class EnergyOptimizer {
+    + peak_hours: List[int]
+    + off_peak_hours: List[int]
+    + peak_rate: float
+    + off_peak_rate: float
+    + analyze_consumption_patterns(df: DataFrame): dict
+    + calculate_potential_savings(df: DataFrame): dict
+    + get_optimization_plan(df: DataFrame): dict
+}
+
+class AnomalyDetector {
+    + contamination: float
+    + prepare_features(df: DataFrame): tuple
+    + detect_anomalies(df: DataFrame): DataFrame
+    + get_anomaly_summary(anomalies: DataFrame): dict
+}
+
+class RealTimeDataGenerator {
+    + base_load: float
+    + peak_multiplier: float
+    + variation: float
+    + generate_real_time_data(days: int): DataFrame
+    + get_latest_reading(): dict
+}
+
+class Auth {
+    + users_dir: Path
+    + users_file: Path
+    + register(email: str, password: str, name: str): tuple
+    + login(email: str, password: str): tuple
+    + is_logged_in(): bool
+    + logout(): void
+}
+
+' Relationships
+DataProcessor --> ReportGenerator : uses
+EnergyPredictor --> DataProcessor : uses
+EnergyOptimizer --> DataProcessor : uses
+AnomalyDetector --> DataProcessor : uses
+RealTimeDataGenerator --> DataProcessor : uses
+
+@enduml 

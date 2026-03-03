@@ -1,0 +1,58 @@
+@startuml
+
+!define table(x) class x << (T,#FFAAAA) >>
+!define primary_key(x) <u>x</u>
+!define foreign_key(x) #x#
+
+' Entities
+table(User) {
+    primary_key(email): string
+    name: string
+    password_hash: string
+    created_at: datetime
+}
+
+table(EnergyConsumption) {
+    primary_key(id): integer
+    foreign_key(user_email): string
+    timestamp: datetime
+    consumption: float
+    is_anomaly: boolean
+    anomaly_score: float
+}
+
+table(Report) {
+    primary_key(id): integer
+    foreign_key(user_email): string
+    report_type: string
+    generated_at: datetime
+    start_date: datetime
+    end_date: datetime
+    report_data: json
+}
+
+table(Prediction) {
+    primary_key(id): integer
+    foreign_key(user_email): string
+    timestamp: datetime
+    predicted_consumption: float
+    confidence_score: float
+}
+
+table(OptimizationPlan) {
+    primary_key(id): integer
+    foreign_key(user_email): string
+    created_at: datetime
+    peak_hours: json
+    off_peak_hours: json
+    recommendations: json
+    potential_savings: float
+}
+
+' Relationships
+User ||--o{ EnergyConsumption : "records"
+User ||--o{ Report : "generates"
+User ||--o{ Prediction : "receives"
+User ||--o{ OptimizationPlan : "has"
+
+@enduml 

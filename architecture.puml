@@ -1,0 +1,182 @@
+@startuml SEMS Architecture
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam component {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+    ArrowColor DarkBlue
+}
+
+' High-Level Architecture
+package "Smart Energy Management System" {
+    [Client Layer] as CL
+    [Application Layer] as AL
+    [Data Layer] as DL
+    
+    CL --> AL
+    AL --> DL
+    
+    package "Security Services" as SS
+    package "Business Logic" as BL
+    package "Storage Services" as ST
+    
+    CL --> SS
+    AL --> BL
+    DL --> ST
+}
+
+' Component Architecture
+package "Detailed Architecture" {
+    package "Client Layer" {
+        [Web Interface\n(Streamlit)] as WI
+    }
+    
+    package "Application Layer" {
+        [API Gateway] as AG
+        [Authentication Service] as AS
+        [ML Service] as ML
+    }
+    
+    package "Data Layer" {
+        [PostgreSQL] as PG
+        [Redis Cache] as RC
+    }
+    
+    WI --> AG
+    AG --> AS
+    AG --> ML
+    AS --> PG
+    ML --> PG
+    ML --> RC
+}
+
+' Data Flow Architecture
+package "Data Flows" {
+    package "Data Collection" {
+        [IoT Devices] as IoT
+        [Data Processor] as DP
+        [Database] as DB
+        
+        IoT --> DP
+        DP --> DB
+    }
+    
+    package "Prediction Flow" {
+        [Historical Data] as HD
+        [ML Model] as MM
+        [Prediction Storage] as PS
+        
+        HD --> MM
+        MM --> PS
+    }
+}
+
+' Security Architecture
+package "Security" {
+    package "Authentication Flow" {
+        [User Login] as UL
+        [Auth Service] as AUTH
+        [JWT Token] as JWT
+        
+        UL --> AUTH
+        AUTH --> JWT
+    }
+    
+    package "Security Layers" {
+        package "Network Security" {
+            [HTTPS/TLS] as HTTPS
+            [Firewall] as FW
+            [DDoS Protection] as DDoS
+        }
+        
+        package "Application Security" {
+            [Input Validation] as IV
+            [SQL Injection Prevention] as SQL
+            [XSS Protection] as XSS
+        }
+        
+        package "Data Security" {
+            [Data Encryption] as DE
+            [Password Hashing] as PH
+            [Access Control] as AC
+        }
+    }
+}
+
+' Deployment Architecture
+package "Deployment" {
+    package "Production Environment" {
+        [Load Balancer] as LB
+        [App Server 1] as AS1
+        [App Server 2] as AS2
+        [Database Cluster] as DC
+        
+        LB --> AS1
+        LB --> AS2
+        AS1 --> DC
+        AS2 --> DC
+    }
+    
+    package "Container Architecture" {
+        [Docker Swarm] as DS
+        [Web App] as WA
+        [API App] as AA
+        [ML App] as MA
+        [Database Cluster] as DBC
+        
+        DS --> WA
+        DS --> AA
+        DS --> MA
+        WA --> DBC
+        AA --> DBC
+        MA --> DBC
+    }
+}
+
+' Monitoring Architecture
+package "Monitoring" {
+    [Metrics Collection] as MC
+    [Monitoring Service] as MS
+    [Alerting System] as ASYS
+    
+    MC --> MS
+    MS --> ASYS
+}
+
+' Development Architecture
+package "Development" {
+    [Local Development] as LD
+    [Staging Environment] as SE
+    [Production Environment] as PE
+    
+    LD --> SE
+    SE --> PE
+}
+
+' CI/CD Pipeline
+package "CI/CD" {
+    package "Build Process" {
+        [Code Compilation] as CC
+        [Testing] as TEST
+        [Documentation] as DOC
+    }
+    
+    package "Deployment Process" {
+        [Environment Setup] as ES
+        [Database Migrations] as DM
+        [Service Deployment] as SD
+    }
+    
+    CC --> TEST
+    TEST --> DOC
+    DOC --> ES
+    ES --> DM
+    DM --> SD
+}
+
+@enduml 
